@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="mobileNav" class="offcanvas offcanvas-start" id="mobileNav" tabindex="-1">
+	<div class="offcanvas-header">
+		<h5 class="offcanvas-title">RoomSync</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+	</div>
+	<div class="offcanvas-body">
+		<nav class="sidebar-nav">
+			<a class="sidebar-link" th:href="@{/}"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+			<a class="sidebar-link" th:href="@{/roommates}"><i class="bi bi-people"></i> Roommates</a>
+			<a class="sidebar-link" th:href="@{/expenses}"><i class="bi bi-receipt"></i> Expenses</a>
+			<a class="sidebar-link" th:href="@{/recurring}"><i class="bi bi-arrow-repeat"></i> Recurring Bills</a>
+			<a class="sidebar-link" th:href="@{/payments}"><i class="bi bi-wallet2"></i> Payments</a>
+			<a class="sidebar-link" th:href="@{/balances}"><i class="bi bi-bar-chart"></i> Balances</a>
+		</nav>
+	</div>
+</div>
+</body>
+</html>

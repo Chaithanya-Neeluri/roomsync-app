@@ -1,0 +1,282 @@
+:root {
+	--rs-indigo: #4f46e5;
+	--rs-indigo-dark: #4338ca;
+	--rs-navy: #0f172a;
+	--rs-muted: #64748b;
+	--rs-bg: #f4f6fb;
+	--rs-card: #ffffff;
+	--rs-border: #e2e8f0;
+	--rs-green: #16a34a;
+	--rs-orange: #d97706;
+	--rs-red: #dc2626;
+	--rs-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+	--rs-radius: 18px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+	font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+	color: var(--rs-navy);
+	background: var(--rs-bg);
+}
+
+.brand-mark {
+	width: 38px;
+	height: 38px;
+	border-radius: 12px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--rs-indigo);
+	color: #fff;
+	flex-shrink: 0;
+}
+
+.brand-text { font-weight: 800; letter-spacing: -0.04em; }
+
+.btn-primary {
+	background: var(--rs-indigo);
+	border-color: var(--rs-indigo);
+	border-radius: 12px;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+	background: var(--rs-indigo-dark);
+	border-color: var(--rs-indigo-dark);
+}
+
+.btn-outline-primary,
+.btn-outline-secondary,
+.btn-outline-danger {
+	border-radius: 12px;
+}
+
+.app-body { min-height: 100vh; }
+
+.app-shell {
+	min-height: 100vh;
+	display: grid;
+	grid-template-columns: 260px 1fr;
+}
+
+.app-sidebar {
+	display: flex;
+	flex-direction: column;
+	background: #fff;
+	border-right: 1px solid var(--rs-border);
+	padding: 24px 18px;
+	position: sticky;
+	top: 0;
+	height: 100vh;
+}
+
+.sidebar-brand {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	text-decoration: none;
+	color: var(--rs-navy);
+	margin-bottom: 28px;
+}
+
+.sidebar-label {
+	font-size: 0.72rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--rs-muted);
+	margin-bottom: 8px;
+}
+
+.sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
+
+.sidebar-link {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 12px;
+	border-radius: 12px;
+	color: #334155;
+	text-decoration: none;
+	transition: 0.15s ease;
+}
+
+.sidebar-link.active,
+.sidebar-link:hover {
+	background: #eef2ff;
+	color: var(--rs-indigo);
+}
+
+.app-main { min-width: 0; display: flex; flex-direction: column; }
+
+.app-topbar {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 18px 28px;
+	background: #fff;
+	border-bottom: 1px solid var(--rs-border);
+}
+
+.topbar-kicker {
+	font-size: 0.75rem;
+	color: var(--rs-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+
+.topbar-title {
+	font-size: 1.35rem;
+	font-weight: 800;
+	margin: 0;
+	letter-spacing: -0.03em;
+}
+
+.topbar-actions { margin-left: auto; }
+
+.app-content { padding: 28px; }
+
+.summary-card,
+.panel,
+.detail-box,
+.empty-panel {
+	background: var(--rs-card);
+	border: 1px solid var(--rs-border);
+	border-radius: var(--rs-radius);
+	box-shadow: var(--rs-shadow);
+}
+
+.summary-card { padding: 18px 20px; animation: rise 0.35s ease; }
+
+.summary-icon {
+	width: 36px;
+	height: 36px;
+	border-radius: 10px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: #eef2ff;
+	color: var(--rs-indigo);
+	margin-bottom: 10px;
+}
+
+.summary-icon.green { background: #dcfce7; color: var(--rs-green); }
+.summary-icon.orange { background: #ffedd5; color: var(--rs-orange); }
+
+.summary-card span,
+.detail-box span {
+	display: block;
+	color: var(--rs-muted);
+	font-size: 0.82rem;
+	margin-bottom: 4px;
+}
+
+.summary-card strong,
+.detail-box strong { font-size: 1.4rem; letter-spacing: -0.03em; }
+.summary-card.pending strong { color: var(--rs-orange); }
+
+.panel { padding: 20px; }
+.panel-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 16px;
+}
+.panel-head h2 { font-size: 1rem; font-weight: 700; margin: 0; }
+.panel-head a { font-size: 0.85rem; color: var(--rs-indigo); text-decoration: none; }
+
+.quick-actions { display: grid; gap: 10px; }
+.quick-action {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 14px;
+	border-radius: 14px;
+	background: #f8fafc;
+	color: var(--rs-navy);
+	text-decoration: none;
+	border: 1px solid var(--rs-border);
+}
+.quick-action:hover { background: #eef2ff; color: var(--rs-indigo); }
+
+.stack-item {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 12px 0;
+	border-bottom: 1px solid #f1f5f9;
+	text-decoration: none;
+	color: inherit;
+}
+.stack-item:last-child { border-bottom: 0; }
+.stack-item small { display: block; color: var(--rs-muted); }
+
+.avatar-circle {
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	background: #eef2ff;
+	color: var(--rs-indigo);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 700;
+}
+.avatar-circle.lg { width: 52px; height: 52px; font-size: 1.2rem; }
+
+.detail-box { padding: 16px; }
+.empty-panel { padding: 36px; text-align: center; }
+.empty-note { color: var(--rs-muted); padding: 8px 0; }
+
+.form-control,
+.form-select {
+	border-radius: 12px;
+	border-color: var(--rs-border);
+	padding: 10px 14px;
+}
+.form-control:focus,
+.form-select:focus {
+	border-color: var(--rs-indigo);
+	box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+}
+
+.table { margin-bottom: 0; }
+.table th { color: var(--rs-muted); font-weight: 600; font-size: 0.82rem; }
+.table-wrap { overflow: auto; padding: 8px 16px 16px; }
+
+.status-pill {
+	display: inline-flex;
+	padding: 4px 10px;
+	border-radius: 999px;
+	font-size: 0.75rem;
+	font-weight: 600;
+	background: #f1f5f9;
+	color: #475569;
+}
+.status-pill.pending { background: #ffedd5; color: #9a3412; }
+.status-pill.partially_paid { background: #fef3c7; color: #92400e; }
+.status-pill.paid { background: #dcfce7; color: #166534; }
+
+.split-box,
+.split-preview {
+	background: #f8fafc;
+	border-radius: 16px;
+	padding: 16px;
+	border: 1px dashed #c7d2fe;
+}
+.split-box h3 { font-size: 1rem; font-weight: 700; }
+
+.filter-bar { padding: 16px 18px; }
+.roommate-card { height: 100%; }
+
+@keyframes rise {
+	from { transform: translateY(8px); opacity: 0; }
+	to { transform: none; opacity: 1; }
+}
+
+@media (max-width: 991px) {
+	.app-shell { grid-template-columns: 1fr; }
+	.app-content { padding: 18px; }
+	.app-topbar { padding: 14px 16px; }
+}

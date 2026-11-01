@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="app-body">
+<div class="app-shell">
+	<aside class="d-none d-lg-flex" th:replace="~{fragments/sidebar :: sidebar}"></aside>
+	<main class="app-main">
+		<header th:replace="~{fragments/topbar :: topbar}"></header>
+		<div th:replace="~{fragments/mobile-nav :: mobileNav}"></div>
+		<section class="app-content">
+			<div th:replace="~{fragments/alerts :: alerts}"></div>
+			<div class="d-flex justify-content-between align-items-center mb-4">
+				<div>
+					<h2 class="h4 mb-1" th:text="${expense.name}">Expense</h2>
+					<div class="text-muted" th:text="${expense.category.label + ' · ' + expense.splittingMethod.label}">Rent</div>
+				</div>
+				<div class="d-flex gap-2">
+					<a class="btn btn-outline-primary" th:href="@{/expenses/{id}/edit(id=${expense.id})}">Edit</a>
+					<form th:action="@{/expenses/{id}/delete(id=${expense.id})}" method="post" onsubmit="return confirm('Delete this expense?');">
+						<button class="btn btn-outline-danger" type="submit">Delete</button>
+					</form>
+				</div>
+			</div>
+
+			<div class="row g-3 mb-4">
+				<div class="col-md-3"><div class="detail-box"><span>Total amount</span><strong th:text="${'₹' + #numbers.formatDecimal(expense.totalAmount, 1, 'COMMA', 2, 'POINT')}">₹0</strong></div></div>
+				<div class="col-md-3"><div class="detail-box"><span>Paid by</span><strong th:text="${expense.paidBy.name}">Alex</strong></div></div>
+				<div class="col-md-3"><div class="detail-box"><span>Date</span><strong th:text="${expense.expenseDate}">2026-01-01</strong></div></div>
+				<div class="col-md-3"><div class="detail-box"><span>Due date</span><strong th:text="${expense.dueDate != null ? expense.dueDate : '—'}">—</strong></div></div>
+			</div>
+			<p class="text-muted" th:if="${expense.description != null}" th:text="${expense.description}"></p>
+
+			<div class="panel">
+				<div class="panel-head"><h2>Split calculation</h2></div>
+				<table class="table align-middle mb-0">
+					<thead>
+						<tr>
+							<th>Roommate</th>
+							<th class="text-end">Share</th>
+							<th class="text-end">Paid</th>
+							<th class="text-end">Remaining</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="share : ${expense.shares}">
+							<td th:text="${share.roommate.name}">Name</td>
+							<td class="text-end" th:text="${'₹' + #numbers.formatDecimal(share.allocatedAmount, 1, 'COMMA', 2, 'POINT')}">₹0</td>
+							<td class="text-end" th:text="${'₹' + #numbers.formatDecimal(share.paidAmount, 1, 'COMMA', 2, 'POINT')}">₹0</td>
+							<td class="text-end" th:text="${'₹' + #numbers.formatDecimal(share.remainingAmount, 1, 'COMMA', 2, 'POINT')}">₹0</td>
+							<td>
+								<span class="status-pill" th:classappend="${share.status.name().toLowerCase()}" th:text="${share.status.label}">Pending</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<p class="small text-muted mt-3">The person who paid the bill has their own share marked as paid automatically.</p>
+		</section>
+	</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
