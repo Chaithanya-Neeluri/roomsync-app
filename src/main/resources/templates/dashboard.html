@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="app-body">
+<div class="app-shell">
+	<aside class="d-none d-lg-flex" th:replace="~{fragments/sidebar :: sidebar}"></aside>
+	<main class="app-main">
+		<header th:replace="~{fragments/topbar :: topbar}"></header>
+		<div th:replace="~{fragments/mobile-nav :: mobileNav}"></div>
+		<section class="app-content">
+			<div th:replace="~{fragments/alerts :: alerts}"></div>
+
+			<div class="row g-3 mb-4">
+				<div class="col-md-6 col-xl-3">
+					<div class="summary-card">
+						<div class="summary-icon"><i class="bi bi-receipt"></i></div>
+						<span>Total Expenses</span>
+						<strong th:text="${'₹' + #numbers.formatDecimal(view.totalExpenses(), 1, 'COMMA', 2, 'POINT')}">₹0</strong>
+					</div>
+				</div>
+				<div class="col-md-6 col-xl-3">
+					<div class="summary-card">
+						<div class="summary-icon green"><i class="bi bi-check2-circle"></i></div>
+						<span>Total Paid</span>
+						<strong th:text="${'₹' + #numbers.formatDecimal(view.totalPaid(), 1, 'COMMA', 2, 'POINT')}">₹0</strong>
+					</div>
+				</div>
+				<div class="col-md-6 col-xl-3">
+					<div class="summary-card pending">
+						<div class="summary-icon orange"><i class="bi bi-hourglass-split"></i></div>
+						<span>Pending Amount</span>
+						<strong th:text="${'₹' + #numbers.formatDecimal(view.pendingAmount(), 1, 'COMMA', 2, 'POINT')}">₹0</strong>
+					</div>
+				</div>
+				<div class="col-md-6 col-xl-3">
+					<div class="summary-card">
+						<div class="summary-icon"><i class="bi bi-people"></i></div>
+						<span>Roommates</span>
+						<strong th:text="${view.roommateCount()}">0</strong>
+					</div>
+				</div>
+			</div>
+
+			<div class="row g-3 mb-4">
+				<div class="col-xl-8">
+					<div class="panel">
+						<div class="panel-head">
+							<h2>Monthly expenses</h2>
+						</div>
+						<canvas id="expenseChart" height="120"></canvas>
+					</div>
+				</div>
+				<div class="col-xl-4">
+					<div class="panel h-100">
+						<div class="panel-head">
+							<h2>Quick actions</h2>
+						</div>
+						<div class="quick-actions">
+							<a class="quick-action" th:href="@{/expenses/new}"><i class="bi bi-plus-circle"></i> Add Expense</a>
+							<a class="quick-action" th:href="@{/roommates}"><i class="bi bi-person-plus"></i> Add Roommate</a>
+							<a class="quick-action" th:href="@{/recurring/new}"><i class="bi bi-arrow-repeat"></i> Add Recurring Bill</a>
+							<a class="quick-action" th:href="@{/payments}"><i class="bi bi-wallet2"></i> Record Payment</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row g-3">
+				<div class="col-xl-4">
+					<div class="panel">
+						<div class="panel-head"><h2>Recent expenses</h2><a th:href="@{/expenses}">View all</a></div>
+						<div th:if="${view.recentExpenses().isEmpty()}" class="empty-note">No expenses yet.</div>
+						<div class="stack-list" th:each="expense : ${view.recentExpenses()}">
+							<a class="stack-item" th:href="@{/expenses/{id}(id=${expense.id})}">
+								<div>
+									<strong th:text="${expense.name}">Rent</strong>
+									<small th:text="${expense.category.label + ' · ' + expense.expenseDate}">Rent</small>
+								</div>
+								<span th:text="${'₹' + #numbers.formatDecimal(expense.totalAmount, 1, 'COMMA', 2, 'POINT')}">₹0</span>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-4">
+					<div class="panel">
+						<div class="panel-head"><h2>Upcoming recurring bills</h2><a th:href="@{/recurring}">Manage</a></div>
+						<div th:if="${view.upcomingBills().isEmpty()}" class="empty-note">No active recurring bills.</div>
+						<div class="stack-list" th:each="bill : ${view.upcomingBills()}">
+							<div class="stack-item">
+								<div>
+									<strong th:text="${bill.billName}">Wi-Fi</strong>
+									<small th:text="${bill.frequency.label + ' · due ' + bill.nextDueDate}">Monthly</small>
+								</div>
+								<span th:text="${'₹' + #numbers.formatDecimal(bill.amount, 1, 'COMMA', 2, 'POINT')}">₹0</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-4">
+					<div class="panel">
+						<div class="panel-head"><h2>Roommate contributions</h2><a th:href="@{/balances}">Balances</a></div>
+						<div th:if="${view.contributions().isEmpty()}" class="empty-note">Add roommates to see contributions.</div>
+						<div class="stack-list" th:each="row : ${view.contributions()}">
+							<div class="stack-item">
+								<div class="d-flex align-items-center gap-2">
+									<span class="avatar-circle" th:text="${row.roommate().initials}">A</span>
+									<div>
+										<strong th:text="${row.roommate().name}">Alex</strong>
+										<small th:text="${'Share ₹' + #numbers.formatDecimal(row.totalShare(), 1, 'COMMA', 2, 'POINT')}">Share</small>
+									</div>
+								</div>
+								<span th:text="${'Paid ₹' + #numbers.formatDecimal(row.totalPaid(), 1, 'COMMA', 2, 'POINT')}">₹0</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script th:inline="javascript">
+	const labels = /*[[${view.chartLabels()}]]*/ [];
+	const totals = /*[[${view.chartTotals()}]]*/ [];
+	const ctx = document.getElementById('expenseChart');
+	if (ctx) {
+		new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels,
+				datasets: [{
+					label: 'Expenses',
+					data: totals,
+					borderColor: '#4f46e5',
+					backgroundColor: 'rgba(79, 70, 229, 0.12)',
+					fill: true,
+					tension: 0.35,
+					pointRadius: 4
+				}]
+			},
+			options: {
+				plugins: { legend: { display: false } },
+				scales: {
+					y: { beginAtZero: true, ticks: { callback: value => '₹' + value } },
+					x: { grid: { display: false } }
+				}
+			}
+		});
+	}
+</script>
+</body>
+</html>

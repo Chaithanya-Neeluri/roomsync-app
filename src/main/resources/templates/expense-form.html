@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/head :: head}"></head>
+<body class="app-body">
+<div class="app-shell">
+	<aside class="d-none d-lg-flex" th:replace="~{fragments/sidebar :: sidebar}"></aside>
+	<main class="app-main">
+		<header th:replace="~{fragments/topbar :: topbar}"></header>
+		<div th:replace="~{fragments/mobile-nav :: mobileNav}"></div>
+		<section class="app-content">
+			<div th:replace="~{fragments/alerts :: alerts}"></div>
+			<form class="panel form-panel" th:action="@{/expenses/save}" method="post" id="expenseForm">
+				<input type="hidden" name="id" th:value="${expense.id}">
+				<div class="row g-3">
+					<div class="col-md-6">
+						<label class="form-label">Expense name</label>
+						<input class="form-control" name="name" required maxlength="120" th:value="${expense.name}">
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">Category</label>
+						<select class="form-select" name="category" required>
+							<option th:each="item : ${categories}" th:value="${item}" th:text="${item.label}" th:selected="${item == expense.category}"></option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label class="form-label">Total amount (₹)</label>
+						<input class="form-control" type="number" step="0.01" min="0.01" name="totalAmount" id="totalAmount" required
+							th:value="${expense.totalAmount}">
+					</div>
+					<div class="col-md-4">
+						<label class="form-label">Date</label>
+						<input class="form-control" type="date" name="expenseDate" required th:value="${expense.expenseDate}">
+					</div>
+					<div class="col-md-4">
+						<label class="form-label">Due date</label>
+						<input class="form-control" type="date" name="dueDate" th:value="${expense.dueDate}">
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">Paid by</label>
+						<select class="form-select" name="paidById" required>
+							<option value="">Select roommate</option>
+							<option th:each="roommate : ${roommates}" th:value="${roommate.id}" th:text="${roommate.name}"
+								th:selected="${expense.paidBy != null && expense.paidBy.id == roommate.id}"></option>
+						</select>
+					</div>
+					<div class="col-md-6">
+						<label class="form-label">Splitting method</label>
+						<select class="form-select" name="splittingMethod" id="splittingMethod">
+							<option th:each="method : ${splitMethods}" th:value="${method}" th:text="${method.label}"
+								th:selected="${method == expense.splittingMethod}"></option>
+						</select>
+					</div>
+					<div class="col-12">
+						<label class="form-label">Description <span class="text-muted">(optional)</span></label>
+						<textarea class="form-control" name="description" rows="3" th:text="${expense.description}"></textarea>
+					</div>
+				</div>
+
+				<div class="split-box mt-4" id="customSplitBox">
+					<h3>Custom split</h3>
+					<p class="text-muted small">Individual shares must add up to the total amount.</p>
+					<div class="row g-2" th:each="roommate : ${roommates}">
+						<div class="col-md-6 d-flex align-items-center" th:text="${roommate.name}">Name</div>
+						<div class="col-md-6">
+							<input class="form-control custom-amount" type="number" step="0.01" min="0"
+								th:name="${'customAmount_' + roommate.id}"
+								th:value="${customAmounts != null ? customAmounts.get(roommate.id) : ''}">
+						</div>
+					</div>
+				</div>
+
+				<div class="split-preview mt-4" id="splitPreview"></div>
+				<div class="mt-4 d-flex gap-2">
+					<button class="btn btn-outline-secondary" type="button" id="previewBtn">Show split</button>
+					<button class="btn btn-primary" type="submit">Save expense</button>
+					<a class="btn btn-link" th:href="@{/expenses}">Cancel</a>
+				</div>
+			</form>
+		</section>
+	</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+	const roommates = /*[[${roommates}]]*/ [];
+</script>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>
