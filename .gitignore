@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local secrets (never commit MySQL passwords)
+application-local.properties
+src/main/resources/application-local.properties
